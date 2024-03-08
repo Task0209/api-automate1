@@ -8,4 +8,5 @@ phases:
   build:
     commands:
       - echo "Deployment begins"
+      - export JAVA_HOME="$JAVA_17_HOME"
       - aws apigateway create-rest-api --name "MyAPI" --region us-east-1
