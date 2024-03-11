@@ -49,38 +49,6 @@ phases:
                   description: "Greeting submitted successfully"
                 "400":
                   description: "Bad request"
-            
-          /resource2:
-            get:
-              summary: "Retrieve a greeting"
-              responses:
-                "200":
-                  description: "A successful response"
-                  content:
-                    application/json:
-                      schema:
-                        type: "object"
-                        properties:
-                          message:
-                            type: "string"
-                            example: "Hello, Universe"
-
-            post:
-              summary: "Submit a greeting"
-              requestBody:
-                required: true
-                content:
-                  application/json:
-                    schema:
-                      type: "object"
-                      properties:
-                        name:
-                          type: "string"
-              responses:
-                "201":
-                  description: "Greeting submitted successfully"
-                "400":
-                  description: "Bad request"
         EOF
   build:
     commands:
@@ -91,15 +59,11 @@ phases:
       - echo $API_ID
       # Create resources
       - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id "null" --path-part resource1 > resource1.json
-      - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id "null" --path-part resource2 > resource2.json
       # Extract resource IDs 
       - export RESOURCE1_ID=$(jq -r '.id' resource1.json)
-      - export RESOURCE2_ID=$(jq -r '.id' resource2.json)
       # Define methods
       - aws apigateway put-method --rest-api-id $API_ID --region "eu-north-1" --resource-id $RESOURCE1_ID --http-method GET --authorization-type "NONE"
       - aws apigateway put-method --rest-api-id $API_ID --region "eu-north-1" --resource-id $RESOURCE1_ID --http-method POST --authorization-type "NONE"
-      - aws apigateway put-method --rest-api-id $API_ID --region "eu-north-1" --resource-id $RESOURCE2_ID --http-method GET --authorization-type "NONE"
-      - aws apigateway put-method --rest-api-id $API_ID --region "eu-north-1" --resource-id $RESOURCE2_ID --http-method POST --authorization-type "NONE"
       # Integrate methods with backend services if needed
   post_build:
     commands:
