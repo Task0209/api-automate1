@@ -7,35 +7,7 @@ phases:
   pre_build:
     commands:
       # Define your OpenAPI specification for the API Gateway
-      - |
-openapi: 3.0.0
-info:
-  version: 1.0.0
-  title: Sample API
-  description: A sample API to illustrate OpenAPI concepts
-paths:
-  /resource1:
-    get:
-      description: Returns a list of stuff              
-      responses:
-        '200':
-          description: Successful response
-    post:
-      description: Returns a list of stuff              
-      responses:
-        '201':
-          description: Recreated resource
-  /resource2:
-    get:
-      description: Returns a list of stuff              
-      responses:
-        '200':
-          description: Successful response
-    post:
-      description: Returns a list of stuff              
-      responses:
-        '201':
-          description: Recreated resource
+      - echo '{ "openapi": "3.0.0", "info": { "title": "My API", "version": "1.0" }, "paths": { "/resource1": { "get": { "responses": { "200": { "description": "Successful operation" } } }, "post": { "responses": { "201": { "description": "Resource created" } } } }, "/resource2": { "get": { "responses": { "200": { "description": "Successful operation" } } }, "post": { "responses": { "201": { "description": "Resource created" } } } } } }' > api_definition.json
     commands:
       # Create the REST API on API Gateway
       - aws apigateway create-rest-api --name "MyAPI" --region "eu-north-1" > rest_api.json
