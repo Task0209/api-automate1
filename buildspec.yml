@@ -7,7 +7,7 @@ phases:
   pre_build:
     commands:
       # Define your OpenAPI specification for the API Gateway
-      - echo '{"openapi": "3.0.0", "info": { "title": "My API", "version": "1.0.0" }, "paths": { "/resource1": { "get": { "responses": { "200": { "description": "Successful operation" } } }, "post": { "responses": { "201": { "description": "Resource created" } } } }, "/resource2": { "get": { "responses": { "200": { "description": "Successful operation" } } }, "post": { "responses": { "201": { "description": "Resource created" } } } } }' > api_definition.json
+      - echo {"openapi": "3.0.0", "info": { "title": "My API", "version": "1.0.0" }, "paths": { "/resource1": { "get": { "responses": { "200": { "description": "Successful operation" } } }, "post": { "responses": { "201": { "description": "Resource created" } } } }, "/resource2": { "get": { "responses": { "200": { "description": "Successful operation" } } }, "post": { "responses": { "201": { "description": "Resource created" } } } } }," > api_definition.json"
   build:
     commands:
       # Create the REST API on API Gateway
