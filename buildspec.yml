@@ -7,7 +7,81 @@ phases:
   pre_build:
     commands:
       # Define your OpenAPI specification for the API Gateway
-      - echo '{ "openapi": "3.0.0", "info": { "title": "My API", "version": "1.0" }, "paths": { "/resource1": { "get": { "responses": { "200": { "description": "Successful operation" } } }, "post": { "responses": { "201": { "description": "Resource created" } } } }, "/resource2": { "get": { "responses": { "200": { "description": "Successful operation" } } }, "post": { "responses": { "201": { "description": "Resource created" } } } } } }' > api_definition.json
+      - |
+        cat <<EOF > api_definition.yaml
+        openapi: "3.0.0"
+        info:
+          title: "My API"
+          version: "1.0.0"
+          description: "Description of my API"
+          contact:
+            name: "John Doe"
+            email: "john.doe@example.com"
+        paths:
+          /resource1:
+            get:
+              summary: "Retrieve a greeting"
+              responses:
+                "200":
+                  description: "A successful response"
+                  content:
+                    application/json:
+                      schema:
+                        type: "object"
+                        properties:
+                          message:
+                            type: "string"
+                            example: "Hello, World!"
+
+            post:
+              summary: "Submit a greeting"
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      type: "object"
+                      properties:
+                        name:
+                          type: "string"
+              responses:
+                "201":
+                  description: "Greeting submitted successfully"
+                "400":
+                  description: "Bad request"
+            
+          /resource2:
+            get:
+              summary: "Retrieve a greeting"
+              responses:
+                "200":
+                  description: "A successful response"
+                  content:
+                    application/json:
+                      schema:
+                        type: "object"
+                        properties:
+                          message:
+                            type: "string"
+                            example: "Hello, Universe"
+
+            post:
+              summary: "Submit a greeting"
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      type: "object"
+                      properties:
+                        name:
+                          type: "string"
+              responses:
+                "201":
+                  description: "Greeting submitted successfully"
+                "400":
+                  description: "Bad request"
+        EOF
     commands:
       # Create the REST API on API Gateway
       - aws apigateway create-rest-api --name "MyAPI" --region "eu-north-1" > rest_api.json
