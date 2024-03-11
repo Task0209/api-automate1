@@ -14,9 +14,6 @@ phases:
           title: "My API"
           version: "1.0.0"
           description: "Description of my API"
-          contact:
-            name: "John Doe"
-            email: "john.doe@example.com"
         paths:
           /resource1:
             get:
