@@ -131,26 +131,28 @@ phases:
           EOF
   build:
     commands:
-      # Create the REST API on API Gateway
-      - aws apigateway create-rest-api --name "MyAPI" --region "eu-north-1" > rest_api.json
-      # Extract the API ID from the response
-      - export API_ID=$(jq -r '.id' rest_api.json)
-      - echo $API_ID
-      # Create resources
-      - aws apigateway create-resource --rest-api-id $API_ID --parent-id a1b2c3 --path-part 'new-resource'
-      - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id "null" --path-part "pets" > resource1.json
-      - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id "null" --path-part "pets/" > resource2.json
-      # Extract resource IDs 
-      - export RESOURCE1_ID=$(jq -r '.id' resource1.json)
-      - export RESOURCE2_ID=$(jq -r '.id' resource2.json)
-      - echo $RESOURCE1_ID
-      - echo $RESOURCE2_ID
-      # Define methods
-      - aws apigateway put-method --rest-api-id $API_ID --region "eu-north-1" --resource-id $RESOURCE1_ID --http-method GET --authorization-type "NONE"
-      - aws apigateway put-method --rest-api-id $API_ID --region "eu-north-1" --resource-id $RESOURCE1_ID --http-method POST --authorization-type "NONE"
-      - aws apigateway put-method --rest-api-id $API_ID --region "eu-north-1" --resource-id $RESOURCE2_ID --http-method GET --authorization-type "NONE"
-      - aws apigateway put-method --rest-api-id $API_ID --region "eu-north-1" --resource-id $RESOURCE2_ID --http-method POST --authorization-type "NONE"
-      # Integrate methods with backend services if needed
+    # Create the REST API on API Gateway
+    - aws apigateway create-rest-api --name "MyAPI" --region "eu-north-1" > rest_api.json
+    # Extract the API ID from the response
+    - export API_ID=$(jq -r '.id' rest_api.json)
+    - echo $API_ID
+    # Create root-level resource
+    - aws apigateway create-resource --rest-api-id $API_ID --path-part '/'
+    # Extract root resource ID
+    - export ROOT_RESOURCE_ID=$(jq -r '.id' resource1.json)
+    # Create child resources
+    - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id $ROOT_RESOURCE_ID --path-part "pets" > resource1.json
+    - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id $ROOT_RESOURCE_ID --path-part "pets/{petId}" > resource2.json
+    # Extract resource IDs 
+    - export RESOURCE1_ID=$(jq -r '.id' resource1.json)
+    - export RESOURCE2_ID=$(jq -r '.id' resource2.json)
+    - echo $RESOURCE1_ID
+    - echo $RESOURCE2_ID
+    # Define methods
+    - aws apigateway put-method --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method GET --authorization-type "NONE"
+    - aws apigateway put-method --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method POST --authorization-type "NONE"
+    - aws apigateway put-method --rest-api-id $API_ID --resource-id $RESOURCE2_ID --http-method GET --authorization-type "NONE"
+    - aws apigateway put-method --rest-api-id $API_ID --resource-id $RESOURCE2_ID --http-method POST --authorization-type "NONE"
   post_build:
     commands:
       - echo "API Gateway setup complete."
