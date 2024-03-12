@@ -4,55 +4,6 @@ phases:
   install:
     runtime-versions:
       python: 3.11
-  pre_build:
-    commands:
-      # Define your OpenAPI specification for the API Gateway
-      - |
-          cat <<EOF > api_definition.yaml
-          openapi: 3.0.0
-          info:
-            title: Sample API
-            version: 1.0.0
-            description: This is a sample API definition
-            contact:
-              name: John Doe
-              email: john.doe@example.com
-              url: https://example.com
-          paths:
-            /hello:
-              get:
-                summary: Returns a greeting message
-                responses:
-                  '200':
-                    description: A successful response
-                    content:
-                      application/json:
-                        schema:
-                          type: object
-                          properties:
-                            message:
-                              type: string
-                              example: Hello, World!
-              post:
-                summary: Submits a greeting message
-                requestBody:
-                  required: true
-                  content:
-                    application/json:
-                      schema:
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                        required:
-                          - name
-                responses:
-                  '201':
-                    description: Greeting submitted successfully
-                  '400':
-                    description: Bad request
-
-          EOF
   build:
     commands:
     # Create the REST API on API Gateway
@@ -69,11 +20,13 @@ phases:
     - export RESOURCE1_ID=$(jq -r '.id' resource1.json)
     - echo $RESOURCE1_ID
     # Define methods
-    - aws apigateway put-method --rest-api-id $API_ID --resource-id $ROOT_RESOURCE_ID --http-method GET --authorization-type "NONE"
-    - aws apigateway put-method --rest-api-id $API_ID --resource-id $ROOT_RESOURCE_ID --http-method POST --authorization-type "NONE"
+    - aws apigateway put-method --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method GET --authorization-type "NONE"
+    - aws apigateway put-method --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method POST --authorization-type "NONE"
     # Define Integration Methods
-    - aws apigateway put-integration --rest-api-id $API_ID --resource-id $ROOT_RESOURCE_ID --http-method GET --type HTTP --integration-http-method GET --uri https://jsonplaceholder.typicode.com/todos/1
-    - aws apigateway put-integration --rest-api-id $API_ID --resource-id $ROOT_RESOURCE_ID --http-method POST --type HTTP --integration-http-method POST --uri https://jsonplaceholder.typicode.com/todos/1
+    - aws apigateway put-integration --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method GET --type HTTP --integration-http-method GET --uri https://jsonplaceholder.typicode.com/todos/1
+    - aws apigateway put-integration --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method POST --type HTTP --integration-http-method POST --uri https://jsonplaceholder.typicode.com/todos/1
+    # Create New API Key
+    - aws apigateway create-api-key  --name MyAPIKey --description "My API Key for Testing" --enabled true
     # Define deployment and stage
     - aws apigateway create-deployment --rest-api-id $API_ID --stage-name dev --description "Initial deployment" > deploy.json
     - export deploy_ID=$(jq -r '.id' deploy.json)
