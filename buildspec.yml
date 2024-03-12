@@ -71,6 +71,9 @@ phases:
     # Define methods
     - aws apigateway put-method --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method GET --authorization-type "NONE"
     - aws apigateway put-method --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method POST --authorization-type "NONE"
+    # Define Integration Methods
+    - aws apigateway put-integration --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method GET --type HTTP --integration-http-method GET --uri https://jsonplaceholder.typicode.com/todos/1
+    
   post_build:
     commands:
       - echo "API Gateway setup complete."
