@@ -26,7 +26,7 @@ phases:
     - aws apigateway put-integration --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method GET --type HTTP --integration-http-method GET --uri https://jsonplaceholder.typicode.com/todos/1
     - aws apigateway put-integration --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method POST --type HTTP --integration-http-method POST --uri https://jsonplaceholder.typicode.com/todos/1
     # Create New API Key
-    - aws apigateway create-api-key  --name MyAPIKey --description "My API Key for Testing" --enabled true
+    #- aws apigateway create-api-key  --name MyAPIKey --description "My API Key for Testing" --enabled true
     # Define deployment and stage
     - aws apigateway create-deployment --rest-api-id $API_ID --stage-name dev --description "Initial deployment" > deploy.json
     - export deploy_ID=$(jq -r '.id' deploy.json)
