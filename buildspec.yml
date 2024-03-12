@@ -29,8 +29,8 @@ phases:
     - aws apigateway put-integration-response --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method GET --status-code 200 --response-templates "{\"application/json\":\"\"}"
     - aws apigateway put-integration-response --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method POST --status-code 201 --response-templates "{\"application/json\":\"\"}"
     # Define Method Response
-    - aws apigateway put-method-response --rest-api-id $API_ID --resource-id <$RESOURCE1_ID --http-method GET --status-code 200 --response-models "{\"application/json\":\"\"}"
-    - aws apigateway put-method-response --rest-api-id $API_ID --resource-id <$RESOURCE1_ID --http-method POST --status-code 201 --response-models "{\"application/json\":\"\"}"
+    - aws apigateway put-method-response --rest-api-id $API_ID --resource-id <$RESOURCE1_ID --http-method GET --status-code 200 --response-models "{\"application/json\":\"Empty\",\"text/html\":\"Empty\"}"
+    - aws apigateway put-method-response --rest-api-id $API_ID --resource-id <$RESOURCE1_ID --http-method POST --status-code 201 --response-models "{\"application/json\":\"Empty\",\"text/html\":\"Empty\"}"
     # Create New API Key
     #- aws apigateway create-api-key  --name MyAPIKey --description "My API Key for Testing" --enabled true
     # Define deployment and stage
