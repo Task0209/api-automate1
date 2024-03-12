@@ -41,7 +41,7 @@ phases:
     # Create Usage Plans
     - aws apigateway create-usage-plan --name base-plans --description "My Usage Plan Description" --throttle "rateLimit=500, burstLimit=100" --quota "limit=1000,offset=0,period=MONTH" > usageplan.json 
      # Extract usage plan IDs
-     - export usage_ID=$(jq -r '.id' usageplan.json
+     - export usage_ID=$(jq -r '.id' usageplan.json)
      - echo $usage_ID
     # Extract API Keys
     #- aws apigateway get-api-keys --query "items[?name=='YOUR_API_KEY_NAME'].id"
