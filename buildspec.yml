@@ -137,6 +137,7 @@ phases:
       - export API_ID=$(jq -r '.id' rest_api.json)
       - echo $API_ID
       # Create resources
+      - aws apigateway create-resource --rest-api-id $API_ID --parent-id a1b2c3 --path-part 'new-resource'
       - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id "null" --path-part "pets" > resource1.json
       - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id "null" --path-part "pets/" > resource2.json
       # Extract resource IDs 
