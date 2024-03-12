@@ -9,19 +9,19 @@ phases:
       # Define your OpenAPI specification for the API Gateway
       - |
           cat <<EOF > api_definition.yaml
-  openapi: 3.0.0
-  info:
-    version: 1.0.0
-    title: Sample API
-    description: A sample API to illustrate OpenAPI concepts
-  paths:
-    /list:
-      get:
-        description: Returns a list of stuff              
-        responses:
-          '200':
-            description: Successful response
-        EOF
+          openapi: 3.0.0
+          info:
+            version: 1.0.0
+            title: Sample API
+            description: A sample API to illustrate OpenAPI concepts
+          paths:
+            /list:
+              get:
+                description: Returns a list of stuff              
+                responses:
+                  '200':
+                    description: Successful response
+          EOF
   build:
     commands:
       # Create the REST API on API Gateway
