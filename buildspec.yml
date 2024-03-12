@@ -26,8 +26,8 @@ phases:
     - aws apigateway put-integration --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method GET --type HTTP --integration-http-method GET --uri https://jsonplaceholder.typicode.com/todos/1
     - aws apigateway put-integration --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method POST --type HTTP --integration-http-method POST --uri https://jsonplaceholder.typicode.com/todos/1
     # Define Integration Response
-    - aws apigateway put-integration-response --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method GET --status-code 200
-    - aws apigateway put-integration-response --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method POST --status-code 201
+    - aws apigateway put-integration-response --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method GET --status-code 200 --response-templates '{"application/json"}'
+    - aws apigateway put-integration-response --rest-api-id $API_ID --resource-id $RESOURCE1_ID --http-method POST --status-code 201 --response-templates '{"application/json"}'
     # Create New API Key
     #- aws apigateway create-api-key  --name MyAPIKey --description "My API Key for Testing" --enabled true
     # Define deployment and stage
