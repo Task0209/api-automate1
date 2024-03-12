@@ -38,6 +38,17 @@ phases:
     - export deploy_ID=$(jq -r '.id' deploy.json)
     - echo $deploy_ID
     - aws apigateway create-stage --rest-api-id $API_ID --stage-name qa --deployment-id $deploy_ID --description "Testing stage"
+    # Create Usage Plans
+    - aws apigateway create-usage-plan --name base-plans --description "My Usage Plan Description" --throttle "rateLimit=500, burstLimit=100" --quota "limit=1000,offset=0,period=MONTH" > usageplan.json 
+     # Extract usage plan IDs
+     - export usage_ID=$(jq -r '.id' usageplan.json
+     - echo $usage_ID
+    # Extract API Keys
+    #- aws apigateway get-api-keys --query "items[?name=='YOUR_API_KEY_NAME'].id"
+    # Associate API Keys with Usage Plan
+    #- aws apigateway create-usage-plan-key --usage-plan-id <USAGE_PLAN_ID> --key-id s1b4saxgif --key-type API_KEY
+   # Step 4: Associate Usage Plan with API Stage
+   #- aws apigateway create-deployment --rest-api-id $API_ID --stage-name <STAGE_NAME>
   post_build:
     commands:
       - echo "API Gateway setup complete."
