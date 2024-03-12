@@ -71,7 +71,7 @@ phases:
                       application/json:
                         schema:
                           $ref: "#/components/schemas/Error"
-            /pets/{petId}:
+            /pets/{petsId}:
               get:
                 summary: Info for a specific pet
                 operationId: showPetById
@@ -141,7 +141,7 @@ phases:
     - echo $ROOT_RESOURCE_ID
     # Create child resources
     - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id $ROOT_RESOURCE_ID --path-part "pets" > resource1.json
-    - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id $ROOT_RESOURCE_ID --path-part "pets/{petId}" > resource2.json
+    - aws apigateway create-resource --rest-api-id $API_ID --region "eu-north-1" --parent-id $ROOT_RESOURCE_ID --path-part "pets/{petsId}" > resource2.json
     # Extract resource IDs 
     #- export RESOURCE1_ID=$(jq -r '.id' resource1.json)
     #- export RESOURCE2_ID=$(jq -r '.id' resource2.json)
