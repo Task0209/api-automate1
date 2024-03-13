@@ -39,9 +39,11 @@ phases:
     - echo $deploy_ID
     - aws apigateway create-stage --rest-api-id $API_ID --stage-name qa --deployment-id $deploy_ID --description "Testing stage"
     # Export API gateway
-    - aws apigateway get-export --parameters extensions='apigateway' --rest-api-id $API_ID --stage-name dev --export-type swagger latestswagger2.json
+    - aws apigateway get-export --parameters extensions='apigateway' --rest-api-id $API_ID --stage-name dev --export-type swagger dev-latestswagger2.json
     - pwd
     - ls -l
+    # Publish the API in Serverless Developer Portal
+    - aws s3 cp dev-latestswagger2.json s3://artifactsbucket-04/catalog/dev-latestswagger2.json
     # Create Usage Plans
     #- aws apigateway create-usage-plan --name base-plans --description "My Usage Plan Description" --throttle "rateLimit=500, burstLimit=100" --quota "limit=1000,offset=0,period=MONTH" > usageplan.json 
      # Fetch Endpoint URL of API Gateway
