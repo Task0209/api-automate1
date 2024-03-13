@@ -39,7 +39,7 @@ phases:
     - echo $deploy_ID
     - aws apigateway create-stage --rest-api-id $API_ID --stage-name qa --deployment-id $deploy_ID --description "Testing stage"
     # Export API gateway
-    - aws apigatewayv2 export-api --api-id $API_ID --output-type JSON --specification OAS30 --no-include-extensions latest-api-definition.json
+    - aws apigateway get-export --parameters extensions='apigateway' --rest-api-id $API_ID --stage-name dev --export-type swagger latestswagger2.json
     - pwd
     - ls -l
     # Create Usage Plans
