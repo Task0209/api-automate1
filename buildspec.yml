@@ -40,9 +40,11 @@ phases:
     - aws apigateway create-stage --rest-api-id $API_ID --stage-name qa --deployment-id $deploy_ID --description "Testing stage"
     # Create Usage Plans
     - aws apigateway create-usage-plan --name base-plans --description "My Usage Plan Description" --throttle "rateLimit=500, burstLimit=100" --quota "limit=1000,offset=0,period=MONTH" > usageplan.json 
+     # Fetch Endpoint URL of API Gateway
+     - aws apigateway get-rest-apis --rest-api-id $API_ID --query "endpointConfiguration.type[?endsWIth(@, ':REGIONAL')].[vpcEndpointId]"
      # Extract usage plan IDs
-     - export usage_ID=$(jq -r '.id' usageplan.json)
-     - echo $usage_ID
+     #- export usage_ID=$(jq -r '.id' usageplan.json)
+     #- echo $usage_ID
     # Extract API Keys
     #- aws apigateway get-api-keys --query "items[?name=='YOUR_API_KEY_NAME'].id"
     # Associate API Keys with Usage Plan
