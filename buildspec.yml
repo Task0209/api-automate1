@@ -41,7 +41,7 @@ phases:
     # Create Usage Plans
     - aws apigateway create-usage-plan --name base-plans --description "My Usage Plan Description" --throttle "rateLimit=500, burstLimit=100" --quota "limit=1000,offset=0,period=MONTH" > usageplan.json 
      # Fetch Endpoint URL of API Gateway
-     - aws apigateway get-rest-apis --rest-api-id $API_ID --query "endpointConfiguration.type[?endsWIth(@, ':REGIONAL')].[vpcEndpointId]"
+     - export endpoint_URL=$(https://$API_ID.execute-api.eu-north-1.amazonaws.com/dev)
      # Extract usage plan IDs
      #- export usage_ID=$(jq -r '.id' usageplan.json)
      #- echo $usage_ID
