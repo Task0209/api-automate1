@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+  build:
+    commands:
+    # Fetch the Existing REST API on API Gateway
+    - API_ID=$(aws apigateway get-rest-apis --query "items[?name=='PetStore'].id" --output text)
+    - echo $API_ID
+    # Export API gateway
+    - aws apigateway get-export --parameters extensions='apigateway' --rest-api-id $API_ID --stage-name dev --export-type swagger dev-latestpureapi.json
+    - pwd
+    - ls -l
+    # Publish the API in Serverless Developer Portal
+    - aws s3 cp dev-latestpureapi.json s3://artifactsbucket-04/catalog/dev-latestpureapi.json
+  post_build:
+    commands:
+      - echo "API Gateway setup complete."
